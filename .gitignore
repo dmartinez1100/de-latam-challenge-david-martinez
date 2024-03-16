@@ -1,3 +1,7 @@
-**.json
+# Se ignoran los archivos json, son muy pesados, y tengo variso de prueba.
+*.json
 
-**.ipynb_checkpoints
+# Se ignoran todoslos archivos temporales/complementarios/cache generados
+*.ipynb_checkpoints
+*__pycache__
+*.DS_Store*
