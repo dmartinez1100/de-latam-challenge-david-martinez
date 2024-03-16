@@ -1,0 +1,38 @@
+name: Deploy Release
+
+on: workflow_dispatch
+
+jobs:
+  deploy_task:
+    runs-on: ubuntu-latest
+    environment: pr
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout Action ECS
+        uses: actions/checkout@v3
+        with:
+          repository: bancodebogota/bdb-dig-do-pipelines-action-ecs-IaC
+          ref: ""
+          token: ${{ secrets.DIG_READER_GITHUB_ACCESS_TOKEN }}
+          persist-credentials: false
+          path: ./.github/actions/bdb-dig-do-pipelines-action-ecs-IaC
+      - name: Deploy Task
+        uses: ./.github/actions/bdb-dig-do-pipelines-action-ecs-IaC/release
+        with:
+          aws-region: us-east-1
+          service: "nodejs-fargate-mngr-template"
+          task-definition-path: "pipeline/prod-task-definition.json"
+          stop-tasks: "true"
+          desired-task-count: 1
+          cluster: "clusterName"
+          load-balancer-name: "loadBalancerName"
+          target-group-name: "nodejs-fargate-mngr-template"
+          check-health: "false"
+          path-environments-variables: >
+            pipeline/qa-task-definition.json
+            pipeline/staging-task-definition.json
+            pipeline/prod-task-definition.json
+          role-assume: ${{ secrets.AWS_ROLE_DEPLOY_BACKEND }}
