@@ -9,7 +9,9 @@ import json
 def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
     """Function with code of Q1 focused on memory."""
 
-    # Se inicializa un defaultdict con valor por defecto en 0 (int)
+    # Se inicializa un defaultdict con valor por defecto un objeto contador
+    # las llaves serán fechas (AAAA-MM-DD) en las que se han escrito tweets
+    # y en cada valor se irán contado los usuarios que escriben cada día
     count_dates_users = defaultdict(Counter)
 
     # Se abre el archivo, será de solo lectura "r"
@@ -47,8 +49,7 @@ def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
                         ),
             top_dates)
 
-        # finalmente ordenamos el top 10
-        # note que seordenna una lista de 10 elementos,
-        # complejidad casi constate O(1), pero nos facilita
-        # la lectura
+        # finalmente ordenamos el top 10, note que se ordena una lista
+        # de 10 elementos ... complejidad casi constate O(1), pero nos
+        # facilita la lectura para el usuario.
         return sorted(top_dates_user)
