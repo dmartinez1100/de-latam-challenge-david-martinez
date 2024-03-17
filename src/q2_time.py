@@ -16,7 +16,7 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
 
         # se inicializa un counter para los emojis, y se itera sobre el
         # contenido de cada tweet.
-        # Noté el archivo existen tweets anidados (quoted_tweet), sin embargo
+        # Noté tweets anidados en el archivo (quoted_tweet), sin embargo
         # no los tendré en cuenta, será una mejora que deberá hacerse.
         n_emojis = Counter()
         for tweet in tws:
@@ -74,6 +74,6 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
         for resultado in resultados:
             n_emojis.update(resultado)
 
-        # finalmete nos aprovechamos del Counter coo estructura de datos
+        # finalmete nos aprovechamos del Counter como estructura de datos
         # para obtener los 10 más comunes
         return n_emojis.most_common(10)
