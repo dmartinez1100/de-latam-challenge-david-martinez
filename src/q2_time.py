@@ -10,7 +10,7 @@ import emoji
 def q2_time(file_path: str) -> List[Tuple[str, int]]:
     """Function with code of Q2 focused on time."""
 
-    # funcion que recibe una lista de tweets y retorna el connteo de cada emoji
+    # funcion que recibe una lista de tweets y retorna el conteo de cada emoji
     # a lo largo de toda la lista
     def count_emojis(tws):
 
@@ -75,5 +75,5 @@ def q2_time(file_path: str) -> List[Tuple[str, int]]:
             n_emojis.update(resultado)
 
         # finalmete nos aprovechamos del Counter como estructura de datos
-        # para obtener los 10 más comunes
+        # para obtener los 10 emmojis más comunes
         return n_emojis.most_common(10)
