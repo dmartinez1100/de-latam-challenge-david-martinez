@@ -31,5 +31,5 @@ def q2_memory(file_path: str) -> List[Tuple[str, int]]:
                 )
 
         # finalmete nos aprovechamos del Counter como estructura de datos
-        # para obtener los 10 más comunes
+        # para obtener los 10 emojis más comunes
         return n_emojis.most_common(10)

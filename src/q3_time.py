@@ -24,11 +24,11 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
 
             # dado el contenido de un tweet, por medio de regex se obtienen las
             # coincidencias de usuarios y se ingresan al contador.
-            # Para la expresiñón regular usé 3 suposiciones, obtenidas de la
+            # Para la expresiñón regular usé 3 suposiciones obtenidas de la
             # documentación de X
-            # --- la longitud de un usuario debe ser entre 4 y 15 caracteres
-            # --- Solo se permite caracteres alfanumericos y "_"
-            # --- los usuarios son caseinsensitive
+            # --- la longitud de un usuario debe está 4 y 15 caracteres (regex)
+            # --- Solo se permite caracteres alfanumericos y "_" (regex)
+            # --- los usuarios son caseinsensitive (.upper() en el contador)
             n_users.update(
                 user.replace("@", "").upper()
                 for user
