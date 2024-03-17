@@ -88,6 +88,11 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
     # paralela
     with open(file_path, "r") as tws_file:
         tws = tws_file.readlines()
+
+        # Cerramos el archivo porque ya fue procesado y  cargado en
+        # memoria
+        tws_file.close()
+
         ln_count = len(tws)
 
         # Dado el número de hilos  que se requiere, se obtiene tamaño
@@ -100,6 +105,10 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
             for i
             in range(n_threads)
             ]
+
+        # Como ya tenemos la data dividida en chunks, eliminamos la
+        # lista de tweets original, esto libera memoria
+        del tws
 
         # Se procesa en paralelo cada chunk, es decir, cada chunk
         # será mapeado con la funciñon get_top_10()
