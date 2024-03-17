@@ -62,11 +62,11 @@ def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
         # Se rellena count_dates_users con la información de ambos top_10
         for _date, _user_counter in (top10_1 + top10_2):
             count_dates_users[_date].update(_user_counter)
-  
+
         # Sumando el contador de cada fecha, obtenemos
         # el total de tweets en el día especifico,
         # tomamos este valor como llave para ordenar las fechas
-        # y sacamos las 10 más grandes según el total   
+        # y sacamos las 10 más grandes según el total.
         top_dates = sorted(count_dates_users.items(),
                            key=lambda date_count: sum(date_count[1].values()),
                            reverse=True
