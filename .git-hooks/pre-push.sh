@@ -7,7 +7,7 @@ STYLE_STATUS=$?
 pylint src/
 PYLINT_STATUS=$?
 
-if ([ STYLE_STATUS -eq 0 ] && [ PYLINT_STATUS -eq 0 ]) || [[ "${CURRENT_BRANCH}" == *"style"* ]];
+if ([ $STYLE_STATUS -eq 0 ] && [ $PYLINT_STATUS -eq 0 ]) || [[ "${CURRENT_BRANCH}" == *"style"* ]];
 then
     echo "Controles pasados, se puede hacer push to ${CURRENT_BRANCH}"
     exit 0
