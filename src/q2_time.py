@@ -1,4 +1,4 @@
-# pylint: disable=W1514
+# pylint: disable=W1514,R0801
 """Module providing a function for challenge Q2 focused on time."""
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Tuple
@@ -9,33 +9,71 @@ import emoji
 
 def q2_time(file_path: str) -> List[Tuple[str, int]]:
     """Function with code of Q2 focused on time."""
-    def countemojis(tws):
-        n_emos = Counter()
+
+    # funcion que recibe una lista de tweets y retorna el connteo de cada emoji
+    # a lo largo de toda la lista
+    def count_emojis(tws):
+
+        # se inicializa un counter para los emojis, y se itera sobre el
+        # contenido de cada tweet.
+        # Noté tweets anidados en el archivo (quoted_tweet), sin embargo
+        # no los tendré en cuenta, será una mejora que deberá hacerse.
+        n_emojis = Counter()
         for tweet in tws:
             tw_content = json.loads(tweet)["content"]
-            n_emos.update(emo["emoji"] for emo in emoji.emoji_list(tw_content))
-        return n_emos
 
-    n_emos = Counter()
+            # Actualizo el contador con todos los emojis encontrados, para esto
+            # uso lafunción emoji_list de la libreria "emoji".
+            n_emojis.update(
+                _emoji["emoji"]
+                for _emoji
+                in emoji.emoji_list(tw_content)
+                )
+
+        # Se retorna el contador de los emojis
+        return n_emojis
+
+    # variable para el número de hilos que se ejecutaran en paralelo
+    # Deberia ser una constante global para que sea reutilizada
+    n_threads = 3
+
+    # se inicializa un contador para juntar todos los resultados
+    n_emojis = Counter()
+
+    # Se abre el archivo, será de solo lectura "r"
+    # en este caso vamos a leer todo el archivo de inmediato
+    # esto subirá enormemente el consumo de memoria, pero será util
+    # para partir los datos en N partes y ponerlos a procesar de forma
+    # paralela
     with open(file_path, "r") as tweets_file:
         tweets = tweets_file.readlines()
         ln_count = len(tweets)
-        chunk_sz = ln_count // 5
+
+        # Dado el número de hilos  que se requiere, se obtiene tamaño
+        # de cada chunk y se hace slicing sobre la lista de tweets
+        chunk_sz = ln_count // n_threads
         chunks = [
-            tweets[(i * chunk_sz): ((i + 1) * chunk_sz if i < 4 else ln_count)]
+            tweets[(i * chunk_sz): ((i + 1) * chunk_sz
+                                    if i < n_threads - 1
+                                    else ln_count)]
             for i
-            in range(5)
+            in range(n_threads)
             ]
 
-        # Procesar las partes en paralelo
+        # Se procesa en paralelo cada chunk, es decir, cada chunk
+        # será mapeado con la funciñon count_emojis()
         with ThreadPoolExecutor() as executor:
             # Mapear la función de procesamiento a cada parte del archivo
             resultados = list(executor.map(
-                countemojis,
+                count_emojis,
                 chunks
                 ))
 
+        # Note que cada resultado del mapper nos retornna un contador,
+        # por lo que los juntamos todos.
         for resultado in resultados:
-            n_emos.update(resultado)
+            n_emojis.update(resultado)
 
-        return n_emos.most_common(10)
+        # finalmete nos aprovechamos del Counter como estructura de datos
+        # para obtener los 10 más comunes
+        return n_emojis.most_common(10)
