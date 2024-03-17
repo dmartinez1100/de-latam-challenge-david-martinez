@@ -55,7 +55,7 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
 
         # Cerramos el archivo porque ya fue procesado y  cargado en
         # memoria
-        tweets_file.close()        
+        tweets_file.close()     
 
         ln_count = len(tweets)
 
