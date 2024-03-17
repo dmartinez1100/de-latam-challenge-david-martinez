@@ -52,6 +52,11 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
     # paralela
     with open(file_path, "r") as tweets_file:
         tweets = tweets_file.readlines()
+
+        # Cerramos el archivo porque ya fue procesado y  cargado en
+        # memoria
+        tweets_file.close()        
+
         ln_count = len(tweets)
 
         # Dado el número de hilos  que se requiere, se obtiene tamaño
@@ -64,6 +69,10 @@ def q3_time(file_path: str) -> List[Tuple[str, int]]:
             for i
             in range(n_threads)
             ]
+
+        # Como ya tenemos la data dividida en chunks, eliminamos la
+        # lista de tweets original, esto libera memoria
+        del tweets
 
         # Se procesa en paralelo cada chunk, es decir, cada chunk
         # será mapeado con la funciñon count_users()
